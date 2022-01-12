@@ -1,7 +1,7 @@
-const Output = () => {
+const Output = (props) => {
     return ( 
         <div id="display">
-            123456
+            {props.output}
         </div>
      );
 }

@@ -1,6 +1,6 @@
-const Formula = () => {
+const Formula = (props) => {
     return ( 
-        <div id="formula">123456</div>
+        <div id="formula">{props.formula}</div>
      );
 }
  
