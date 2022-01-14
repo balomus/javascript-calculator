@@ -16,7 +16,7 @@ const Buttons = (props) => {
         if (isNum.test(buttonValue))
         {
             console.log("is a number");
-            if (props.output === "0")
+            if (props.output === "0" || isOperator.test(props.output))
             {
                 props.setOutput(buttonValue);
                 props.setFormula(buttonValue);
@@ -36,9 +36,19 @@ const Buttons = (props) => {
 
         if (isOperator.test(buttonValue))
         {
-            props.setRunningFormula(props.runningFormula + props.output + buttonValue);
-            props.setOutput("0");
-            props.setFormula("0");
+            if(!isOperator.test(props.output))
+            {
+                props.setOutput(buttonValue);
+                props.setFormula("");
+                props.setRunningFormula(props.runningFormula + props.output + buttonValue);
+            }
+
+            else
+            {
+                props.setOutput(buttonValue);
+                // props.setFormula(buttonValue);
+                props.setRunningFormula(props.runningFormula + props.output);
+            }
         }
 
         if (buttonValue === "=")
