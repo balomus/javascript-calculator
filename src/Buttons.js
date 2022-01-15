@@ -4,7 +4,7 @@ const Buttons = (props) => {
         const isNum = /[0-9]/;
         const isOperator = /[/X+-]/;
 
-        console.log(buttonValue + " clicked");
+        // console.log(buttonValue + " clicked");
         
         if (buttonValue === "AC")
         {
@@ -15,11 +15,14 @@ const Buttons = (props) => {
 
         if (isNum.test(buttonValue))
         {
-            console.log("is a number");
             if (props.output === "0" || isOperator.test(props.output))
             {
                 props.setOutput(buttonValue);
                 props.setFormula(buttonValue);
+                if (isOperator.test(props.output))
+                {
+                    props.setRunningFormula(props.runningFormula + props.output);
+                }
             }
             else 
             {
@@ -30,8 +33,16 @@ const Buttons = (props) => {
 
         if (buttonValue === "." && !props.output.includes("."))
         {
-            props.setOutput(props.output + buttonValue);
-            props.setFormula(props.formula + buttonValue)
+            if (isOperator.test(props.output))
+            {
+                props.setOutput("0.");
+                props.setFormula("0.")
+                props.setRunningFormula(props.runningFormula + props.output);
+            }
+            else{
+                props.setOutput(props.output + buttonValue);
+                props.setFormula(props.formula + buttonValue);
+            }
         }
 
         if (isOperator.test(buttonValue))
@@ -39,28 +50,48 @@ const Buttons = (props) => {
             if(!isOperator.test(props.output))
             {
                 props.setOutput(buttonValue);
-                props.setFormula("");
-                props.setRunningFormula(props.runningFormula + props.output + buttonValue);
+                props.setFormula(buttonValue);
+                props.setRunningFormula(props.runningFormula + props.output);
             }
 
             else
             {
                 props.setOutput(buttonValue);
-                // props.setFormula(buttonValue);
-                props.setRunningFormula(props.runningFormula + props.output);
+                props.setFormula(buttonValue);
             }
         }
 
         if (buttonValue === "=")
         {
-            calculate(props.runningFormula);
+            calculate(props.runningFormula + props.formula);
         }
-    };
+    }
 
     const calculate = (formula) => 
     {
         console.log(formula);
-    };
+        
+    }
+
+    const divide = (num1, num2) => 
+    {
+        return num1 / num2;
+    }
+    
+    const multiply = (num1, num2) =>
+    {
+        return num1 * num2;
+    }
+
+    const subtract = (num1, num2) =>
+    {
+        return num1 - num2;
+    }
+
+    const add = (num1, num2) =>
+    {
+        return num1 + num2;
+    }
 
     return ( 
         <div className="wrapper">
