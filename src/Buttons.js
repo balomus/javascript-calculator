@@ -1,8 +1,10 @@
 const Buttons = (props) => {
+    
+    const isNum = /[0-9]/;
+    const isOperator = /[/X+-]/;
+    
     const handleClick = (e) => {
         const buttonValue = e.target.value;
-        const isNum = /[0-9]/;
-        const isOperator = /[/X+-]/;
 
         // console.log(buttonValue + " clicked");
         
@@ -70,7 +72,88 @@ const Buttons = (props) => {
     const calculate = (formula) => 
     {
         console.log(formula);
+        // console.log("Index of / is " + formula.indexOf("/"))
+        // console.log("Index of * is " + formula.indexOf("X"))
+        // console.log("Index of - is " + formula.indexOf("-"))
+        // console.log("Index of + is " + formula.indexOf("+"))
+        var numbers = formula.split(isOperator);
+        var operators = formula.split(isNum);
+        var answer;
+
+        operators.shift();
+        operators.pop();
+
+        console.log("Numbers are: " + numbers);
+        console.log("Numbers length is " + numbers.length)
         
+        console.log("Operators are: " + operators);
+        console.log("Operator length is " + operators.length)
+
+        for (var i = 0; i < operators.length; i++)
+        {
+            if (operators[i] == "X")
+            {
+                console.log("MULTIPLYING")
+                numbers.splice(i, 2, multiply(numbers[i], numbers[i + 1]));
+                operators.splice(i, 1);
+
+                console.log("Numbers are now: " + numbers);
+                console.log("Numbers length is now " + numbers.length)
+                
+                console.log("Operators are now: " + operators);
+                console.log("Operator length is now " + operators.length)
+
+                i--;
+            }
+
+            if (operators[i] == "/")
+            {
+                console.log("DIVIDING")
+                numbers.splice(i, 2, divide(numbers[i], numbers[i + 1]));
+                operators.splice(i, 1);
+
+                console.log("Numbers are now: " + numbers);
+                console.log("Numbers length is now " + numbers.length)
+                
+                console.log("Operators are now: " + operators);
+                console.log("Operator length is now " + operators.length)
+            }
+        }
+
+        for (var i = 0; i < operators.length; i++)
+        {
+            if (operators[i] == "+")
+            {
+                console.log("ADDING")
+                numbers.splice(i, 2, add(numbers[i], numbers[i + 1]));
+                operators.splice(i, 1);
+
+                console.log("Numbers are now: " + numbers);
+                console.log("Numbers length is now " + numbers.length)
+                
+                console.log("Operators are now: " + operators);
+                console.log("Operator length is now " + operators.length)
+
+                i--;
+            }
+
+            if (operators[i] == "-")
+            {
+                console.log("SUBTRACTING")
+                numbers.splice(i, 2, subtract(numbers[i], numbers[i + 1]));
+                operators.splice(i, 1);
+
+                console.log("Numbers are now: " + numbers);
+                console.log("Numbers length is now " + numbers.length)
+                
+                console.log("Operators are now: " + operators);
+                console.log("Operator length is now " + operators.length)
+            }
+        }
+
+        props.setFormula(props.formula + "=" + numbers[0]);
+        props.setOutput(numbers[0]);
+
     }
 
     const divide = (num1, num2) => 
@@ -90,7 +173,7 @@ const Buttons = (props) => {
 
     const add = (num1, num2) =>
     {
-        return num1 + num2;
+        return Number(num1) + Number(num2);
     }
 
     return ( 
