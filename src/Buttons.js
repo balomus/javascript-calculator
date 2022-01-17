@@ -27,38 +27,64 @@ const Buttons = (props) => {
             }
             else 
             {
-                // if (props.answerSet == true)
-                // {
-                //     props.setRunningFormula(props.output);
-                    
-                // }
-                updateOutputAndDisplay(props.output + buttonValue);
+                if (props.answerSet == true)
+                {
+                    props.setRunningFormula("");
+                    updateOutputAndDisplay(buttonValue);
+                    props.setAnswerSet(false);
+                }
+                else
+                {
+                    updateOutputAndDisplay(props.output + buttonValue);
+                }
             }
         }
 
-        if (buttonValue === "." && !props.output.includes("."))
+        if (buttonValue === ".")
         {
-            if (isOperator.test(props.output))
+            if (props.answerSet == false)
             {
-                updateOutputAndDisplay("0.");
-                props.setRunningFormula(props.runningFormula + props.output);
+                if(!props.output.includes("."))
+                {
+                    if (isOperator.test(props.output))
+                    {
+                        updateOutputAndDisplay("0.");
+                        props.setRunningFormula(props.runningFormula + props.output);
+                    }
+                    else
+                    {
+                        updateOutputAndDisplay(props.output + buttonValue);
+                    }
+                }
             }
-            else{
-                updateOutputAndDisplay(props.output + buttonValue);
+            else
+            {
+                props.setRunningFormula("");
+                updateOutputAndDisplay("0.");
+                props.setAnswerSet(false);
             }
         }
 
         if (isOperator.test(buttonValue))
         {
-            if(!isOperator.test(props.output))
+            if (props.setAnswerSet == false)
             {
-                updateOutputAndDisplay(buttonValue);
-                props.setRunningFormula(props.runningFormula + props.output);
-            }
+                if(!isOperator.test(props.output))
+                {
+                    updateOutputAndDisplay(buttonValue);
+                    props.setRunningFormula(props.runningFormula + props.output);
+                }
 
+                else
+                {
+                    updateOutputAndDisplay(buttonValue);
+                }
+            }
             else
             {
+                props.setRunningFormula(props.output);
                 updateOutputAndDisplay(buttonValue);
+                props.setAnswerSet(false);
             }
         }
 
