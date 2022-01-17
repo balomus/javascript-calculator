@@ -138,13 +138,13 @@ const Buttons = (props) => {
 
         if (isOperator.test(formula.charAt(formula.length - 1)))
         {
-            props.setFormula("=" + numbers[0]);
+            props.setFormula("=" + Math.round(1000000000000 * numbers[0]) / 1000000000000);
         }
         else
         {
-            props.setFormula(props.formula + "=" + numbers[0]);
+            props.setFormula(props.formula + "=" + Math.round(1000000000000 * numbers[0]) / 1000000000000);
         }
-        props.setOutput(numbers[0]);
+        props.setOutput(Math.round(1000000000000 * numbers[0]) / 1000000000000);
         props.setAnswerSet(true);
     }
 
