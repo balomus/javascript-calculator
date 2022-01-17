@@ -67,12 +67,12 @@ const Buttons = (props) => {
 
         if (isOperator.test(buttonValue))
         {
-            if (props.setAnswerSet == false)
+            if (props.answerSet == false)
             {
                 if(!isOperator.test(props.output))
                 {
-                    updateOutputAndDisplay(buttonValue);
                     props.setRunningFormula(props.runningFormula + props.output);
+                    updateOutputAndDisplay(buttonValue);
                 }
 
                 else
