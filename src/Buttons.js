@@ -12,6 +12,7 @@ const Buttons = (props) => {
         {
             updateOutputAndDisplay("0");
             props.setRunningFormula("");
+            props.setAnswerSet(false);
         }
 
         if (isNum.test(buttonValue))
@@ -26,6 +27,11 @@ const Buttons = (props) => {
             }
             else 
             {
+                // if (props.answerSet == true)
+                // {
+                //     props.setRunningFormula(props.output);
+                    
+                // }
                 updateOutputAndDisplay(props.output + buttonValue);
             }
         }
@@ -66,7 +72,13 @@ const Buttons = (props) => {
     {
         console.log(formula);
         var numbers = formula.split(isOperator);
-        var operators = formula.split(isNum).filter(n => n);
+        var operators = formula.split(isNum).filter(n => n).filter(n => n!= ".");
+
+        if (isOperator.test(formula.charAt(formula.length - 1)))
+        {
+            operators.pop();
+            console.log("Operators is now " + operators + " and we should have removed the last element.");
+        }
 
         for (var i = 0; i < operators.length; i++)
         {
@@ -98,9 +110,16 @@ const Buttons = (props) => {
             }
         }
 
-        props.setFormula(props.formula + "=" + numbers[0]);
+        if (isOperator.test(formula.charAt(formula.length - 1)))
+        {
+            props.setFormula("=" + numbers[0]);
+        }
+        else
+        {
+            props.setFormula(props.formula + "=" + numbers[0]);
+        }
         props.setOutput(numbers[0]);
-
+        props.setAnswerSet(true);
     }
 
     const getAnswer = (numbers, operators, i, operatorFunction) => 

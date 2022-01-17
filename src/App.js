@@ -8,6 +8,7 @@ function App() {
   const [output, setOutput] = useState("0");
   const [formula, setFormula] = useState("0");
   const [runningFormula, setRunningFormula] = useState("");
+  const [answerSet, setAnswerSet] = useState(false);
 
   useEffect(() => {
 
@@ -18,7 +19,7 @@ function App() {
       <div className="container">
         <Formula formula={formula} runningFormula={runningFormula}/>
         <Output output={output} formula={formula}/>
-        <Buttons output={output} setOutput={setOutput} formula={formula} setFormula={setFormula} runningFormula={runningFormula} setRunningFormula={setRunningFormula}/>
+        <Buttons output={output} setOutput={setOutput} formula={formula} setFormula={setFormula} runningFormula={runningFormula} setRunningFormula={setRunningFormula} answerSet={answerSet} setAnswerSet={setAnswerSet}/>
       </div>
     </div>
   );
