@@ -27,7 +27,7 @@ const Buttons = (props) => {
             }
             else 
             {
-                if (props.answerSet == true)
+                if (props.answerSet === true)
                 {
                     props.setRunningFormula("");
                     updateOutputAndDisplay(buttonValue);
@@ -42,7 +42,7 @@ const Buttons = (props) => {
 
         if (buttonValue === ".")
         {
-            if (props.answerSet == false)
+            if (props.answerSet === false)
             {
                 if(!props.output.includes("."))
                 {
@@ -67,17 +67,31 @@ const Buttons = (props) => {
 
         if (isOperator.test(buttonValue))
         {
-            if (props.answerSet == false)
+            if (props.answerSet === false)
             {
-                if(!isOperator.test(props.output))
+                if (buttonValue === "-")
                 {
-                    props.setRunningFormula(props.runningFormula + props.output);
-                    updateOutputAndDisplay(buttonValue);
+                    if (props.output === "0")
+                    {
+                        updateOutputAndDisplay(buttonValue);
+                    }
+                    else if (isOperator.test(props.output) && props.output !== "-")
+                    {
+                        updateOutputAndDisplay(props.output + buttonValue);
+                    }
                 }
-
                 else
                 {
-                    updateOutputAndDisplay(buttonValue);
+                    if(!isOperator.test(props.output))
+                    {
+                        props.setRunningFormula(props.runningFormula + props.output);
+                        updateOutputAndDisplay(buttonValue);
+                    }
+
+                    else
+                    {
+                        updateOutputAndDisplay(buttonValue);
+                    }
                 }
             }
             else
@@ -98,7 +112,23 @@ const Buttons = (props) => {
     {
         console.log(formula);
         var numbers = formula.split(isOperator);
-        var operators = formula.split(isNum).filter(n => n).filter(n => n!= ".");
+
+        for (var i = 0; i < numbers.length; i++)
+        {
+            if (numbers[i] === "")
+            {
+                numbers[i + 1] = numbers[i + 1] * -1;
+            }
+        }
+
+        numbers = numbers.filter(n => n);
+
+        // Updated original operators split/filter to accomodate negative numbers
+        var operators = formula.split("").filter(n => n !== ".").filter(n => !isNum.test(n));
+        // var operators = formula.split(isNum).filter(n => n).filter(n => n !== ".");
+
+        console.log("numbers = " + numbers);
+        console.log("operators = " + operators);
 
         if (isOperator.test(formula.charAt(formula.length - 1)))
         {
@@ -108,13 +138,14 @@ const Buttons = (props) => {
 
         for (var i = 0; i < operators.length; i++)
         {
-            if (operators[i] == "X")
+            console.log("i = " + i + " operators.length = " + operators.length + " operators[" + i + "] is " + operators[i]);
+            if (operators[i] === "X")
             {
                 getAnswer(numbers, operators, i, multiply);
                 i--;
             }
 
-            if (operators[i] == "/")
+            if (operators[i] === "/")
             {
                 getAnswer(numbers, operators, i, divide);
                 i--;
@@ -123,13 +154,13 @@ const Buttons = (props) => {
 
         for (var i = 0; i < operators.length; i++)
         {
-            if (operators[i] == "+")
+            if (operators[i] === "+")
             {
                 getAnswer(numbers, operators, i, add);
                 i--;
             }
 
-            if (operators[i] == "-")
+            if (operators[i] === "-")
             {
                 getAnswer(numbers, operators, i, subtract);
                 i--;
