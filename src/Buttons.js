@@ -71,13 +71,21 @@ const Buttons = (props) => {
             {
                 if (buttonValue === "-")
                 {
-                    if (props.output === "0")
+                    if (props.output === "0" || props.output === "+")
                     {
                         updateOutputAndDisplay(buttonValue);
                     }
                     else if (isOperator.test(props.output) && props.output !== "-")
                     {
-                        updateOutputAndDisplay(props.output + buttonValue);
+                        if (!props.output.includes("-"))
+                        {
+                            updateOutputAndDisplay(props.output + buttonValue);
+                        }
+                    }
+                    else
+                    {
+                        props.setRunningFormula(props.runningFormula + props.output);
+                        updateOutputAndDisplay(buttonValue);
                     }
                 }
                 else
@@ -124,8 +132,22 @@ const Buttons = (props) => {
         numbers = numbers.filter(n => n);
 
         // Updated original operators split/filter to accomodate negative numbers
-        var operators = formula.split("").filter(n => n !== ".").filter(n => !isNum.test(n));
-        // var operators = formula.split(isNum).filter(n => n).filter(n => n !== ".");
+        // var operators = formula.split("").filter(n => n !== ".").filter(n => !isNum.test(n));
+        var operators = formula.split(isNum).filter(n => n).filter(n => n !== ".");
+        
+        // removing extra "-"s from operators list, only impacts formulas where user does a something like 1 * -2 or 1 / -2
+        for (var i = 0; i < operators.length; i++)
+        {
+            if (operators[i].length > 1)
+            {
+                operators[i] = operators[i][0];
+            }
+        }
+
+        if (Math.sign(numbers[0]) === -1)
+        {
+            operators.shift();
+        }
 
         console.log("numbers = " + numbers);
         console.log("operators = " + operators);
